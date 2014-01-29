@@ -1,0 +1,107 @@
+﻿@model InterestApp.Models.TransactionDetail
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm("Create", "TransactionDetail", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <h4>TransactionDetail</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Type, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.Type, (SelectList)ViewBag.TypeList)
+                @Html.ValidationMessageFor(model => model.Type)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.VailedTime, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.VailedTime, new {@class = "form-control", onclick = "WdatePicker()",onchange="eval()"})
+                @Html.ValidationMessageFor(model => model.VailedTime)
+            </div>
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.Amount, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Amount, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Amount)
+            </div>
+        </div>
+        <div class="form-group">
+           
+            @Html.LabelFor(model => model.InterestMasterId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.InterestMasterId, (SelectList)ViewBag.ImSelectList)
+                @Html.ValidationMessageFor(model => model.InterestMasterId)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Mark, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Mark,new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Mark)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("应付利息", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <p id="payableInterest"></p>
+            </div>
+            
+        </div>
+        <div class="form-group">
+            @Html.Label("应付本金", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <p id="payableCapital"></p>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+  <script type="text/javascript">
+      function getInterestAjax(id,dateTime) {
+          $.ajax({
+              url: '/TransactionDetail/getInterestAmount',
+              data:{
+                  'iMid': id,
+                  'dateTime':dateTime
+              },
+              contentType: 'application/json;',
+              dataType: 'json',
+              success: function (e) {
+                  $("#payableCapital").text(e.capitalamount);
+                  $("#payableInterest").text(e.payableinterest);
+              }
+          });
+      }
+      $(document).ready(function () {
+          $("#@Html.GetPropertyName(t=>t.VailedTime)").change(function (e) {
+              getInterestAjax($("#@Html.GetPropertyName(t=>t.InterestMasterId)").val(), e.target.value);
+          });
+      });
+
+
+  </script>
+}

@@ -1,0 +1,106 @@
+﻿@model InterestApp.Models.InterestMaster
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+
+@using (Html.BeginForm("Create", "InterestMaster", FormMethod.Post)) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>InterestMaster</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        @*
+        <fieldset>
+            <legend>Portfolio</legend>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="name" class="col-xs-4 control-label">Label1</label>
+                    <div class="col-xs-8">
+                        <input type="text" class="form-control" placeholder="control1" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="name" class="col-xs-4 control-label">label2</label>
+                    <div class="col-xs-8">
+                        <input type="text" class="form-control" placeholder="control2" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="name" class="col-xs-4 control-label">label3</label>
+                    <div class="col-xs-8 form-inline">
+                        <div class="form-group col-xs-6">
+                            <input type="text" class="form-control" placeholder="control1" />
+                        </div>
+                        <div class="form-group col-xs-6">
+                            <input type="text" class="form-control" placeholder="control2" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="name" class="col-xs-4 control-label">Label1</label>
+                    <div class="col-xs-8">
+                        <input type="text" class="form-control" placeholder="control1" />
+                    </div>
+                </div>
+                <div class="input-append">
+                    <label for="name" class="col-xs-4 control-label">label2</label>
+                    <div class="col-xs-8 ">
+                        <input type="text" class="form-control" placeholder="control2" />
+                        <span class="add-on"><i>%</i></span>
+                    </div>
+                </div>
+                <h4> Input prepend</h4>
+                <div class="input-prepend">
+                    <span class="add-on"><i class="icon-user icon-black"></i></span>
+                    <input type="text" name="login" placeholder="Email address" />
+                </div>
+                <h4>Input append</h4>
+                <div class="input-append">
+                    <input type="text" name="login" placeholder="Email address" />
+                    <span class="add-on"><i class="icon-user icon-black"></i></span>
+                </div>
+                <div class="input-group">
+                    <input type="Search" placeholder="Search..." class="form-control" />
+
+                            <span class="glyphicon glyphicon-search"></span>
+
+                </div>
+                <div class="form-group">
+                    <div class="right-inner-addon ">
+                        <i class="icon-user"></i>
+                        <input type="text" class="form-control" />
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+            *@
+        
+        @Html.Partial("_Change");
+        
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script type="text/javascript">
+
+</script>

@@ -1,0 +1,179 @@
+﻿@model InterestApp.Models.InterestMaster
+<div class="col-md-8">
+    <div class="form-group">
+        @Html.LabelFor(model => model.ImName, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.ImName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.ImName)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.LoanUnit, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.LoanUnit, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.LoanUnit)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.LoanType, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.LoanType, (SelectList)ViewBag.LoanTypeList)
+            @Html.ValidationMessageFor(model => model.LoanType)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ContractNumber, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.ContractNumber, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.ContractNumber)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ReceiptNumber, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.ReceiptNumber, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.ReceiptNumber)
+        </div>
+    </div>
+    
+    <div class="form-group">
+        @Html.LabelFor(model => model.HostBank, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.HostBank, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.HostBank)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.RemitType, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.RemitType, (SelectList)ViewBag.RemitTypeList)
+            @Html.ValidationMessageFor(model => model.RemitType)
+        </div>
+    </div>
+
+    @*
+    <div class="form-group">
+        @Html.LabelFor(model => model.Assignee, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.Assignee, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Assignee)
+        </div>
+    </div>*@
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.RemitAccount, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.RemitAccount, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.RemitAccount)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.SaveAccount, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.SaveAccount, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.SaveAccount)
+        </div>
+    </div>
+
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.AccountId, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.AccountId, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.AccountId)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.CurrencyType, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.CurrencyType, (SelectList)ViewBag.CurrencyTypeList)
+            @Html.ValidationMessageFor(model => model.CurrencyType)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.CurrencyAmount, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.CurrencyAmount, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.CurrencyAmount)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Mpr, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="col-xs-4">
+                <div class="right-inner-addon ">
+                    <i>%</i>
+                    @Html.TextBoxFor(model => model.Mpr, new { @class = "form-control" })
+                </div>
+            </div>
+                
+                @Html.ValidationMessageFor(model => model.Mpr)
+            </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.CycleOfPayment, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.CycleOfPayment, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.CycleOfPayment)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.AgreedBackDate, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.AgreedBackDate, new { @class = "form-control", onclick = "WdatePicker()" })
+            @Html.ValidationMessageFor(model => model.AgreedBackDate)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ExpiredMpr, new { @class = "control-label col-md-2 datepicker" })
+        <div class="col-md-10">
+            <div class="col-xs-4">
+                <div class="right-inner-addon ">
+                    <i>%</i>
+                    @Html.TextBoxFor(model => model.ExpiredMpr, new { @class = "form-control" })
+                </div>
+            </div>
+            @Html.ValidationMessageFor(model => model.ExpiredMpr)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.BorrowedTime, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.BorrowedTime, new { @class = "form-control",onclick = "WdatePicker()"})
+            @Html.ValidationMessageFor(model => model.BorrowedTime)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.StartTime, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.StartTime, new { @class = "form-control",onclick = "WdatePicker()"})
+            @Html.ValidationMessageFor(model => model.StartTime)
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Mark, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.Mark, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Mark)
+        </div>
+    </div>
+
+</div>
+
