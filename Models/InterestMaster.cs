@@ -92,7 +92,7 @@ namespace InterestApp.Models
         [Display(Name = "日利率")]
         [NotMapped]
         public float Dpr { get; set; }
-        [Display(Name = "还款周期")]
+        [Display(Name = "结息周期")]
         public float CycleOfPayment { get; set; }
         [Display(Name = "约定还本日期")]
         public DateTime AgreedBackDate { get; set; }
@@ -167,6 +167,9 @@ namespace InterestApp.Models
         [Display(Name = "结算利息")]
         public double InterestAmount { get; set; }
 
+        [Display(Name="最近结息日期")]
+        public DateTime LastPayableDate { get; set; }
+
     }
 
     public class InterestMasterDBContext : DbContext
@@ -182,45 +185,6 @@ namespace InterestApp.Models
         public const string IncrCptl = "I2";
         public const string DecrInt  = "D1";
         public const string DecrCptl = "D2";
-
-        public static double getInterest(int iMid, InterestMasterDBContext db) {
-            /*var query = from x in db.TransactionDetails.Where(x =>
-                            x.InterestMasterId == iMid &&
-                            (x.Type == General.IncrInt || x.Type == General.DecrInt)).Select(x => x.Type == General.IncrInt ? x.Amount : x.Amount * -1)
-                        from y in db.TransactionDetails.Where (y =>
-                                y.InterestMasterId == iMid
-                                    && (y.Type == General.IncrCptl || y.Type == General.DecrCptl)
-                              ).Select(y => y.Type == General.IncrCptl ? y.Amount : y.Amount * -1)
-                        from z in db.InterestMasters.Where(o => o.Id == iMid).Select(o => 
-                                       ((DateTime.Now > o.AgreedBackDate ? (DateTime.Now.Date - o.AgreedBackDate).Days : 0) * o.ExpiredDpr + 
-                                       (DateTime.Now > o.AgreedBackDate ? (o.AgreedBackDate - o.StartTime).Days : (DateTime.Now.Date - o.StartTime).Days) * o.Dpr) 
-                                       / (DateTime.Now.Date - o.StartTime).Days).Take(1)
-                        from z1 in db.TransactionDetails.Where(o => o.Id == iMid && o.Type == General.IncrInt).OrderByDescending(o => o.VailedTime).Take(1)
-                        select new { x+(DateTime.Now - z1 ? )};*/
-            var now = DateTime.Now;
-            var query = from im in db.InterestMasters
-                        where im.Id == iMid
-                        join itst in
-                            (from it in db.TransactionDetails where it.Type == General.IncrInt || it.Type == General.DecrInt group it by it.InterestMasterId into i select new { key = i.Key, totalItst = i.Sum(x => x.Type == General.IncrInt ? x.Amount : x.Amount * -1) })
-                        on im.Id equals itst.key into itstJoin
-                        join cptl in
-                            (from cp in db.TransactionDetails where cp.Type == General.IncrCptl || cp.Type == General.DecrCptl group cp by cp.InterestMasterId into i select new { key = i.Key, totalCpl = i.Sum(x => x.Type == General.IncrCptl ? x.Amount : x.Amount * -1) })
-                        on im.Id equals cptl.key into cptlJoin
-                        from day in db.TransactionDetails.Where(o => o.Id == iMid && o.Type == General.IncrInt).OrderByDescending(o => o.VailedTime).Select(o => o.VailedTime).Take(1)
-                        from rate in db.InterestMasters.Where(o => o.Id == iMid ).Select(o =>
-                                       ((now > o.AgreedBackDate ? DbFunctions.DiffDays(now,o.AgreedBackDate) : 0) * 0.1 +
-                                       (now > o.AgreedBackDate ? DbFunctions.DiffDays(o.AgreedBackDate, o.StartTime) : DbFunctions.DiffDays(now.Date, o.StartTime)) * 0.2)
-                                       / DbFunctions.DiffDays(now,o.StartTime)).Take(1)
-                        select new
-                        {
-                            /*start = (day != null ? day : im.StartTime),*/
-                            interest = itstJoin.Select(o=>o.totalItst).FirstOrDefault(),
-                            capital = cptlJoin.Select(o => o.totalCpl).FirstOrDefault(),
-                            rate,
-                        };
-
-            return query.Select(o => o.interest + (5 * (o.rate.HasValue ? (double)o.rate : 0.0) * (o.capital))).Single();
-        }
 
         public static double getCapital(int iMid, InterestMasterDBContext db)
         {
@@ -325,22 +289,6 @@ GROUP BY mt.Id
             string query = File.ReadAllText(path);
             var samples = db.Database.SqlQuery<TinyInterestMaster>(query).ToList();
             return samples.Select(x=>x);
-        }
-
-        public static float getRate(InterestMaster im)
-        {
-            float sumRate;
-            float rate;
-            int expiredDays = (DateTime.Now.Date - im.AgreedBackDate).Days;
-            int agreedDays  = (im.AgreedBackDate - im.StartTime).Days;
-            int totalDays   = (DateTime.Now.Date - im.StartTime).Days;
-
-            sumRate = (totalDays > agreedDays ? expiredDays : 0) * im.ExpiredDpr + 
-                      (totalDays > agreedDays ? agreedDays : totalDays) * im.Dpr;
-            rate = sumRate / totalDays;
-
-            return rate;
-
         }
 
     }

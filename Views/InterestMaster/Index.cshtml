@@ -27,6 +27,9 @@
             @Html.DisplayNameFor(model => model.PayableInterest)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.LastPayableDate)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.StartTime)
         </th>
         <th></th>
@@ -48,6 +51,9 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.PayableInterest)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LastPayableDate)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.StartTime)
