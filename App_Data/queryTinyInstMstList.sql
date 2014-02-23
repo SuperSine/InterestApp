@@ -1,1 +1,1 @@
-﻿select * from LastInterestList
+﻿select * from LiList

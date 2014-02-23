@@ -90,7 +90,7 @@ namespace InterestApp.Controllers
                 InterestMaster interestMaster = db.InterestMasters.Find(paybackdetail.InterestMasterId);
 
                 double interest = 0;
-                TinyInterestMaster tIntstMst = General.getDeltaRate(paybackdetail.InterestMasterId,paybackdetail.VailedTime, db);
+                TinyInterestMaster tIntstMst = General.getInterestByDate(paybackdetail.InterestMasterId, paybackdetail.VailedTime, db);
                 tIntstMst.DeltaInterest = tIntstMst.PayableInterest - tIntstMst.InterestAmount;
                 interest = tIntstMst.DeltaInterest;
                // double interest = General.getRateEx(paybackdetail.InterestMasterId,db);
@@ -123,6 +123,7 @@ namespace InterestApp.Controllers
                         balance.Type = General.IncrInt;
 
                         paybackdetail.Type = General.DecrCptl;
+                        interestMaster.LastIncrIntrst = paybackdetail.VailedTime; 
 
                         db.InterestMasters.Attach(interestMaster);
                         var entry = db.Entry(interestMaster);
