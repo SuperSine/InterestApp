@@ -8,15 +8,18 @@ using System.Web;
 using System.Web.Mvc;
 using InterestApp.Models;
 using System.Linq.Expressions;
+using Microsoft.AspNet.Identity;
 
 namespace InterestApp.Controllers
 {
+    [Authorize]
     public class InterestMasterController : Controller
     {
         private InterestMasterDBContext db = new InterestMasterDBContext();
         private const string bindList = "Id,ImName,LoanUnit,LoanType,ContractNumber,ReceiptNumber,RemitType,Assignee,RemitAccount,SaveAccount,HostBank,AccountId,CurrencyType,Mpr,CycleOfPayment,AgreedBackDate,BorrowedTime,StartTime,Mark,ExpiredMpr,CurrencyAmount";
 
         private const int BaseNumber = 100;
+        private string _userId;
 
         public InterestMasterController() {
             InitiliazeSelectList();
@@ -32,6 +35,7 @@ namespace InterestApp.Controllers
         // GET: /InterestMaster/
         public ActionResult Index()
         {
+            this._userId = User.Identity.GetUserId();
             return View(General.getTinyInstMstList(db).ToList());
         }
 

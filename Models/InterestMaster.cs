@@ -24,6 +24,8 @@ namespace InterestApp.Models
 
         private float _mpr;
         private float _eMpr;
+        private double _currencyAmount;
+        private double _payableInterest;
 
         [Key]
         public int Id { get; set; }
@@ -70,7 +72,7 @@ namespace InterestApp.Models
 
         [Display(Name = "借入本金")]
         [NotMapped]
-        public double CurrencyAmount { get; set; }
+        public double CurrencyAmount { get { return Math.Round(this._currencyAmount,General.RoundDigit); } set { this._currencyAmount = value; } }
 
         [Display(Name = "年利率")]
         [NotMapped]
@@ -121,7 +123,7 @@ namespace InterestApp.Models
 
         [Display(Name = "应付利息")]
         [NotMapped]
-        public double PayableInterest { get; set; }
+        public double PayableInterest { get { return Math.Round(this._payableInterest, General.RoundDigit); } set { this._payableInterest = value; } }
         [Display(Name = "借入日期")]
         public DateTime BorrowedTime { get; set; }
         [Display(Name = "起息日期")]
@@ -141,6 +143,12 @@ namespace InterestApp.Models
     }
 
     public class TinyInterestMaster {
+        private double _capitalAmount;
+        private double _paidCapital;
+        private double _paiedInterest;
+        private double _interestAmount;
+        private double _deltaInterest;
+        private double _payableInterest;
         public int Id { get; set; }
 
         [Display(Name = "标识名称")]
@@ -150,7 +158,7 @@ namespace InterestApp.Models
         public string LoanUnit { get; set; }
 
         [Display(Name = "借入本金")]
-        public double CapitalAmount { get; set; }
+        public double CapitalAmount { get { return Math.Round(this._capitalAmount, General.RoundDigit); } set { this._capitalAmount = value; } }
 
         [Display(Name = "月利率")]
         public float Mpr { get; set; }
@@ -159,17 +167,25 @@ namespace InterestApp.Models
         public DateTime StartTime { get; set; }
 
         [Display(Name = "应付利息")]
-        public double PayableInterest { get; set; }
+        public double PayableInterest { get { return Math.Round(this._payableInterest, General.RoundDigit); } set { this._payableInterest = value; } }
 
         [Display(Name = "增量利息")]
-        public double DeltaInterest { get; set; }
+        public double DeltaInterest { get { return Math.Round(this._deltaInterest, General.RoundDigit); } set { this._deltaInterest = value; } }
 
         [Display(Name = "结算利息")]
-        public double InterestAmount { get; set; }
+        public double InterestAmount { get { return Math.Round(this._interestAmount, General.RoundDigit); } set { this._interestAmount = value; } }
 
         [Display(Name="最近结息日期")]
         public DateTime LastPayableDate { get; set; }
 
+        [Display(Name="当前利率")]
+        public float CurrentRate { get; set; }
+
+        [Display(Name = "已付利息")]
+        public double PaiedInterest { get { return Math.Round(this._paiedInterest, General.RoundDigit); } set { this._paiedInterest = value; } }
+
+        [Display(Name = "已付本金")]
+        public double PaiedCapital { get { return Math.Round(this._paidCapital, General.RoundDigit); } set { this._paidCapital = value; } }
     }
 
     public class InterestMasterDBContext : DbContext
@@ -185,6 +201,8 @@ namespace InterestApp.Models
         public const string IncrCptl = "I2";
         public const string DecrInt  = "D1";
         public const string DecrCptl = "D2";
+
+        public const int RoundDigit = 2;
 
         public static double getCapital(int iMid, InterestMasterDBContext db)
         {

@@ -20,6 +20,7 @@ namespace InterestApp.Controllers
             return expression.Substring(expression.LastIndexOf('.') + 1);
         }
     }
+    [Authorize]
     public class TransactionDetailController : Controller
     {
         private InterestMasterDBContext db = new InterestMasterDBContext();
@@ -89,10 +90,8 @@ namespace InterestApp.Controllers
 
                 InterestMaster interestMaster = db.InterestMasters.Find(paybackdetail.InterestMasterId);
 
-                double interest = 0;
                 TinyInterestMaster tIntstMst = General.getInterestByDate(paybackdetail.InterestMasterId, paybackdetail.VailedTime, db);
                 tIntstMst.DeltaInterest = tIntstMst.PayableInterest - tIntstMst.InterestAmount;
-                interest = tIntstMst.DeltaInterest;
                // double interest = General.getRateEx(paybackdetail.InterestMasterId,db);
 
                 switch(paybackdetail.Type){
@@ -119,15 +118,24 @@ namespace InterestApp.Controllers
                         }
 
                         balance = new TransactionDetail();
-                        balance.Amount = interest;
+                        balance.Amount = tIntstMst.DeltaInterest;
                         balance.Type = General.IncrInt;
 
                         paybackdetail.Type = General.DecrCptl;
-                        interestMaster.LastIncrIntrst = paybackdetail.VailedTime; 
 
+                        /*更新最新结息日期*/
+                        interestMaster.LastIncrIntrst = paybackdetail.VailedTime; 
                         db.InterestMasters.Attach(interestMaster);
                         var entry = db.Entry(interestMaster);
                         entry.Property(e => e.LastIncrIntrst).IsModified = true;
+
+                        /*调整过日期的最新利率*/
+                        RateDetail rateDetail = new RateDetail();
+                        rateDetail.Rate = tIntstMst.CurrentRate;
+                        rateDetail.Since = paybackdetail.VailedTime;
+                        rateDetail.CreateTime = paybackdetail.CreateTime;
+                        rateDetail.InterestMasterId = paybackdetail.InterestMasterId;
+                        db.RateDetails.Add(rateDetail);
                         
                         break;
 
