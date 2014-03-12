@@ -33,10 +33,19 @@ namespace InterestApp.Controllers
         }
 
         // GET: /InterestMaster/
-        public ActionResult Index()
+        public ActionResult Index(DateTime? startDate,DateTime? endDate)
         {
+
+            ViewBag.StartDate = startDate.Equals(null) ? null : startDate;
+            ViewBag.EndDate = endDate.Equals(null) ? null : endDate;
+            
+            if (startDate == null) startDate = DateTime.MinValue;
+            if (endDate == null) endDate = DateTime.MaxValue;
+
+            
+            
             this._userId = User.Identity.GetUserId();
-            return View(General.getTinyInstMstList(db).ToList());
+            return View(General.getTinyInstMstList(db).Where(e=>e.LastPayableDate >= startDate && e.LastPayableDate <= endDate).ToList());
         }
 
         // GET: /InterestMaster/Details/5
