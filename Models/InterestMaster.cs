@@ -85,8 +85,8 @@ namespace InterestApp.Models
 
             set {
                 if (value != null) {
-                    this.Dpr = value / DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
                     this.Apr = value * 12;
+                    this.Dpr = this.Apr / 365;
                     this._mpr = value;
                 }
             } 
@@ -109,8 +109,8 @@ namespace InterestApp.Models
             {
                 if (value != null)
                 {
-                    this.ExpiredDpr = value / DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
                     this.ExpiredApr = value * 12;
+                    this.ExpiredDpr = this.ExpiredApr / 365;
                     this._eMpr = value;
                 }
             }         

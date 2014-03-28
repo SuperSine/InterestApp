@@ -41,5 +41,6 @@ namespace InterestApp.Models
         [ForeignKey("InterestMaster")]
         public int InterestMasterId { get; set; }
         public virtual InterestMaster InterestMaster { get; set; }
+        public virtual TransactionDetail SubTransactionDetail { get; set; }
     }
 }

@@ -160,6 +160,7 @@ namespace InterestApp.Controllers
 
                 if (balance != null) {
                     balance.InterestMasterId = paybackdetail.InterestMasterId;
+                    paybackdetail.SubTransactionDetail = balance;
                     paybackdetails.Add(balance); 
                 }
                 paybackdetails.Add(paybackdetail);                
@@ -223,7 +224,11 @@ namespace InterestApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            TransactionDetail paybackdetail = db.TransactionDetails.Find(id);
+            TransactionDetail paybackdetail = db.TransactionDetails.Include(e => e.SubTransactionDetail).SingleOrDefault(e => e.Id == id);
+
+            if(paybackdetail.SubTransactionDetail != null)
+                db.TransactionDetails.Remove(paybackdetail.SubTransactionDetail);
+
             db.TransactionDetails.Remove(paybackdetail);
             db.SaveChanges();
             return RedirectToAction("Index");

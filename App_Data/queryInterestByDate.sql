@@ -1,7 +1,7 @@
 ﻿SELECT isnull((SUM(mt.rate * mt.duration) * cpint.CapitalAmount + cpint.InterestAmount ),0) as PayableInterest,mt.ImName,mt.LoanUnit,mt.Mpr,mt.StartTime,cpint.CapitalAmount,cpint.InterestAmount,mt.Id
-,(select top(1) Rate from RateDetails where InterestMasterId = mt.Id and GETDATE() >= Since order by Since desc) as CurrentRate
+,isnull((select top(1) Rate from RateDetails where InterestMasterId = mt.Id and GETDATE() >= Since order by Since desc),0) as CurrentRate
 FROM (
-	SELECT LastIncrIntrst
+	SELECT (select top(1) VailedTime From TransactionDetails Where InterestMasterId = base.Id and Type = 'D2' order by VailedTime desc) as LastIncrIntrst
 		,StartTime
 		,base.Id
 		,DATEDIFF(DAY, a.Since, isnull(b.Since, {1})) AS duration
