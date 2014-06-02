@@ -15,14 +15,14 @@ namespace InterestApp.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+            ViewBag.Message = "一款计算利息的在线服务";
 
             return View();
         }
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "联系信息";
 
             return View();
         }

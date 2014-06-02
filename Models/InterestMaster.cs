@@ -149,6 +149,10 @@ namespace InterestApp.Models
         private double _interestAmount;
         private double _deltaInterest;
         private double _payableInterest;
+
+        private double myRound(double value) {
+            return Math.Round(value,General.RoundDigit,MidpointRounding.ToEven);
+        }
         public int Id { get; set; }
 
         [Display(Name = "标识名称")]
@@ -158,7 +162,7 @@ namespace InterestApp.Models
         public string LoanUnit { get; set; }
 
         [Display(Name = "借入本金")]
-        public double CapitalAmount { get { return Math.Round(this._capitalAmount, General.RoundDigit); } set { this._capitalAmount = value; } }
+        public double CapitalAmount { get { return this.myRound(_capitalAmount); } set { this._capitalAmount = value; } }
 
         [Display(Name = "月利率")]
         public float Mpr { get; set; }
@@ -167,13 +171,13 @@ namespace InterestApp.Models
         public DateTime StartTime { get; set; }
 
         [Display(Name = "应付利息")]
-        public double PayableInterest { get { return Math.Round(this._payableInterest, General.RoundDigit); } set { this._payableInterest = value; } }
+        public double PayableInterest { get { return this.myRound(_payableInterest); } set { this._payableInterest = value; } }
 
         [Display(Name = "增量利息")]
-        public double DeltaInterest { get { return Math.Round(this._deltaInterest, General.RoundDigit); } set { this._deltaInterest = value; } }
+        public double DeltaInterest { get { return this.myRound(_deltaInterest); } set { this._deltaInterest = value; } }
 
         [Display(Name = "结算利息")]
-        public double InterestAmount { get { return Math.Round(this._interestAmount, General.RoundDigit); } set { this._interestAmount = value; } }
+        public double InterestAmount { get { return this.myRound(_interestAmount); } set { this._interestAmount = value; } }
 
         [Display(Name="最近结息日期")]
         public DateTime LastPayableDate { get; set; }
@@ -182,10 +186,10 @@ namespace InterestApp.Models
         public float CurrentRate { get; set; }
 
         [Display(Name = "已付利息")]
-        public double PaiedInterest { get { return Math.Round(this._paiedInterest, General.RoundDigit); } set { this._paiedInterest = value; } }
+        public double PaiedInterest { get { return this.myRound(_paiedInterest); } set { this._paiedInterest = value; } }
 
         [Display(Name = "已付本金")]
-        public double PaiedCapital { get { return Math.Round(this._paidCapital, General.RoundDigit); } set { this._paidCapital = value; } }
+        public double PaiedCapital { get { return this.myRound(_paidCapital); } set { this._paidCapital = value; } }
     }
 
     public class InterestMasterDBContext : DbContext

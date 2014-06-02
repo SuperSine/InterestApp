@@ -14,9 +14,9 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>列表</h2>
 
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("创建", "Create")
 
 @using (Html.BeginForm("Index", "InterestMaster", FormMethod.Get, new { @class = "navbar-form pull-right" }))
 {
@@ -90,9 +90,9 @@
                 @Html.DisplayFor(modelItem => item.StartTime)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                @Html.ActionLink("编辑", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("明细", "Details", new { id = item.Id }) |
+                @Html.ActionLink("删除", "Delete", new { id = item.Id })
             </td>
         </tr>
     }

@@ -7,7 +7,7 @@ CREATE VIEW [dbo].[LiList]
 ,cpint.DecrCapitalAmount as PaiedCapital
 
 FROM (
-	SELECT (select top(1) VailedTime From TransactionDetails Where InterestMasterId = base.Id and Type = 'D2' order by VailedTime desc) as LastIncrIntrst
+	SELECT lii
 		,StartTime
 		,base.Id
 		,DATEDIFF(DAY, a.Since, isnull(b.Since, GETDATE())) AS duration
@@ -17,7 +17,8 @@ FROM (
 		,Mpr
 		,DATEADD(DAY,ROUND(DATEDIFF(DAY,StartTime,GETDATE()) / CycleOfPayment,0,1) * CycleOfPayment,StartTime) as LastPayableDate
 		,BorrowedTime
-	FROM InterestMasters base
+		,LastIncrIntrst
+	FROM (select *, (select top(1) VailedTime From TransactionDetails Where InterestMasterId = InterestMasters.Id and Type = 'D2' order by VailedTime desc) as lii from InterestMasters) base
 	LEFT JOIN (
 		SELECT ROW_NUMBER() OVER (
 				ORDER BY [Id] ASC
@@ -25,7 +26,7 @@ FROM (
 			,*
 		FROM RateDetails
 		) a ON a.InterestMasterId = base.Id
-		AND a.Since >= isnull(LastIncrIntrst, StartTime) and a.Since < GETDATE()
+		AND a.Since >= isnull(lii, StartTime) and a.Since < GETDATE()
 	LEFT JOIN (
 		SELECT ROW_NUMBER() OVER (
 				ORDER BY [Id] ASC
@@ -33,7 +34,7 @@ FROM (
 			,*
 		FROM RateDetails
 		) b ON a.oId = b.oId AND a.InterestMasterId = b.InterestMasterId
-		AND b.Since >= isnull(LastIncrIntrst, StartTime) and b.Since < GETDATE()
+		AND b.Since >= isnull(lii, StartTime) and b.Since < GETDATE()
 	) mt
 LEFT JOIN (
 	SELECT isnull(SUM(CASE WHEN [Type] = 'I2' THEN Amount END),0) AS IncrCapitalAmount

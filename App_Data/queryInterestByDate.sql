@@ -9,7 +9,7 @@ FROM (
 		,ImName
 		,LoanUnit
 		,Mpr
-	FROM InterestMasters base
+	FROM (select *, (select top(1) VailedTime From TransactionDetails Where InterestMasterId = InterestMasters.Id and Type = 'D2' order by VailedTime desc) as lii from InterestMasters) base
 	LEFT JOIN (
 		SELECT ROW_NUMBER() OVER (
 				ORDER BY [Id] ASC
@@ -17,7 +17,7 @@ FROM (
 			,*
 		FROM RateDetails
 		) a ON a.InterestMasterId = base.Id
-		AND a.Since >= isnull(LastIncrIntrst, StartTime) and a.Since < {1}
+		AND a.Since >= isnull(lii, StartTime) and a.Since < {1}
 	LEFT JOIN (
 		SELECT ROW_NUMBER() OVER (
 				ORDER BY [Id] ASC
@@ -25,7 +25,7 @@ FROM (
 			,*
 		FROM RateDetails
 		) b ON a.oId = b.oId AND a.InterestMasterId = b.InterestMasterId
-		AND b.Since >= isnull(LastIncrIntrst, StartTime) and b.Since < {1}
+		AND b.Since >= isnull(lii, StartTime) and b.Since < {1}
 	) mt
 LEFT JOIN (
 	SELECT isnull(SUM(CASE 

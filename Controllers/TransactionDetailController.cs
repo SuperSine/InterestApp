@@ -19,6 +19,19 @@ namespace InterestApp.Controllers
             var expression = ExpressionHelper.GetExpressionText(propertyNameExpr);
             return expression.Substring(expression.LastIndexOf('.') + 1);
         }
+
+        public static string GetTranTypeName<TModel>(this HtmlHelper<TModel> htmlHelper, string type) {
+            string typeName = "";
+            switch (type) {
+                case General.IncrCptl: typeName = "增加本金"; break;
+                case General.IncrInt:  typeName = "增加利息"; break;
+                case General.DecrCptl: typeName = "扣除本金"; break;
+                case General.DecrInt:  typeName = "扣除利息"; break;
+                default: break;
+            }
+
+            return typeName;
+        }
     }
     [Authorize]
     public class TransactionDetailController : Controller
@@ -49,7 +62,7 @@ namespace InterestApp.Controllers
         // GET: /TransactionDetail/
         public ActionResult Index()
         {
-            return View(db.TransactionDetails.ToList());
+            return View(db.TransactionDetails.Include(e=>e.InterestMaster).ToList());
         }
 
         // GET: /TransactionDetail/Details/5
